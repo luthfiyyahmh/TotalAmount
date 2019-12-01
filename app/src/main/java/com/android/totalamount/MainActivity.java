@@ -108,18 +108,26 @@ public class MainActivity extends AppCompatActivity {
                             //Disini parsing JSONnya sesuai dengan bentuk JSON
                             String namabrg = response.getString("nama");
                             String hargabrg = response.getString("harga");
+                            int jumlah = 1;
 
                             Log.d("Coro", namabrg +";"+hargabrg);
 
                             ItemBarang itemBarang = new ItemBarang();
                             itemBarang.setHarga(hargabrg); //Ini buat set ke textview atau layout
                             itemBarang.setNama(namabrg);
+                            itemBarang.setJumlah(1);
                             ListBarangAdapter listBarangAdapter = new ListBarangAdapter(list);
 
                             if(now==0){
                                 list.add(itemBarang);
                                 rvHeroes.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                                 rvHeroes.setAdapter(listBarangAdapter);
+                                listBarangAdapter.setOnItemClickCallback(new ListBarangAdapter.OnItemClickCallback() {
+                                    @Override
+                                    public void onItemClicked(ItemBarang data) {
+                                        showSelectedHero(data);
+                                    }
+                                });
                                 now = 1;
                             }else{
                                 list.add(itemBarang);
@@ -139,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mQueue.add(request);
+    }
+
+    private void showSelectedHero(ItemBarang barang) {
+        Toast.makeText(this, "Kamu memilih " + barang.getNama(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

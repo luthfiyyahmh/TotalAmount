@@ -21,8 +21,17 @@ public class ItemBarang implements Parcelable {
         this.harga = harga;
     }
 
+    public int getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(int jumlah) {
+        this.jumlah = jumlah;
+    }
+
     private String nama;
     private String harga;
+    private int jumlah;
 
     @Override
     public int describeContents() {
@@ -33,6 +42,7 @@ public class ItemBarang implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.nama);
         dest.writeString(this.harga);
+        dest.writeInt(this.jumlah);
     }
 
     public ItemBarang() {
@@ -41,6 +51,7 @@ public class ItemBarang implements Parcelable {
     protected ItemBarang(Parcel in) {
         this.nama = in.readString();
         this.harga = in.readString();
+        this.jumlah = in.readInt();
     }
 
     public static final Creator<ItemBarang> CREATOR = new Creator<ItemBarang>() {
