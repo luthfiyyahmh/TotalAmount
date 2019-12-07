@@ -15,11 +15,6 @@ import java.util.ArrayList;
 public class ListBarangAdapter extends RecyclerView.Adapter<ListBarangAdapter.ListViewHolder> {
 
     private ArrayList<ItemBarang> listItemBarangs;
-    private OnItemClickCallback onItemClickCallback;
-
-    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback;
-    }
 
     public ListBarangAdapter(ArrayList<ItemBarang> list) {
         this.listItemBarangs = list;

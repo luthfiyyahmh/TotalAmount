@@ -33,7 +33,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView rvHeroes;
+    private RecyclerView rvBarang;
     private ArrayList<ItemBarang> list = new ArrayList<>();
 
     //Declare an Image URI, which will be in use later
@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rvHeroes = findViewById(R.id.rv_heroes);
-        rvHeroes.setHasFixedSize(true);
+        rvBarang = findViewById(R.id.rv_barang);
+        rvBarang.setHasFixedSize(true);
         mQueue = Volley.newRequestQueue(this);
     }
 
@@ -120,20 +120,14 @@ public class MainActivity extends AppCompatActivity {
 
                             if(now==0){
                                 list.add(itemBarang);
-                                rvHeroes.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                                rvHeroes.setAdapter(listBarangAdapter);
-                                listBarangAdapter.setOnItemClickCallback(new ListBarangAdapter.OnItemClickCallback() {
-                                    @Override
-                                    public void onItemClicked(ItemBarang data) {
-                                        showSelectedHero(data);
-                                    }
-                                });
+                                rvBarang.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                                rvBarang.setAdapter(listBarangAdapter);
                                 now = 1;
                             }else{
                                 list.add(itemBarang);
                                 Log.d("Coro", String.valueOf(list.size()));
                                 listBarangAdapter.notifyDataSetChanged();
-                                rvHeroes.setAdapter(listBarangAdapter);
+                                rvBarang.setAdapter(listBarangAdapter);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -149,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         mQueue.add(request);
     }
 
-    private void showSelectedHero(ItemBarang barang) {
+    private void showSelectedBarang(ItemBarang barang) {
         Toast.makeText(this, "Kamu memilih " + barang.getNama(), Toast.LENGTH_SHORT).show();
     }
 
