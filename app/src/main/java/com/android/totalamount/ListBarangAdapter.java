@@ -1,5 +1,7 @@
 package com.android.totalamount;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +10,22 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import static com.android.totalamount.MainActivity.totalharga;
+
 public class ListBarangAdapter extends RecyclerView.Adapter<ListBarangAdapter.ListViewHolder> {
 
     private ArrayList<ItemBarang> listItemBarangs;
+    private Context mContext;
 
-    public ListBarangAdapter(ArrayList<ItemBarang> list) {
+
+    public ListBarangAdapter(ArrayList<ItemBarang> list, Context context) {
         this.listItemBarangs = list;
+        mContext = context;
     }
 
     @NonNull
@@ -40,6 +48,14 @@ public class ListBarangAdapter extends RecyclerView.Adapter<ListBarangAdapter.Li
                 int jumlah = itemBarang.getJumlah()+1;
                 holder.tvjumlah.setText(String.valueOf(jumlah));
                 itemBarang.setJumlah(jumlah);
+                int hargatemp = Integer.parseInt(itemBarang.getHarga());
+                int total = jumlah*hargatemp;
+                int totalsebelumya = (jumlah-1)*hargatemp;
+                totalharga = totalharga + total - totalsebelumya;
+                Log.d("Total", String.valueOf(totalharga));
+                Intent intent = new Intent("custom-message");
+                intent.putExtra("jumlah",totalharga);
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
         });
 
@@ -51,6 +67,14 @@ public class ListBarangAdapter extends RecyclerView.Adapter<ListBarangAdapter.Li
                     holder.tvjumlah.setText(String.valueOf(jumlah));
                     itemBarang.setJumlah(jumlah);
                 }
+                int hargatemp = Integer.parseInt(itemBarang.getHarga());
+                int total = jumlah*hargatemp;
+                int totalsebelumya = (jumlah-1)*hargatemp;
+                totalharga = totalharga + total - totalsebelumya;
+                Log.d("Total", String.valueOf(totalharga));
+                Intent intent = new Intent("custom-message");
+                intent.putExtra("jumlah",totalharga);
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
         });
     }

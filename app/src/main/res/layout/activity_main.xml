@@ -9,6 +9,48 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_barang"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="510dp"
         tools:listitem="@layout/item_row_barang" />
+
+    <TextView
+        android:id="@+id/total_belanja"
+        android:layout_width="222dp"
+        android:layout_height="47dp"
+        android:layout_below="@+id/rv_barang"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="23dp"
+        android:text="Total Belanja = "
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/jumlahmain"
+        android:layout_width="222dp"
+        android:layout_height="47dp"
+        android:layout_below="@+id/rv_barang"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="221dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="3dp"
+        android:text="0"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="584dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Submit"
+        android:textColor="@android:color/black" />
+
 </RelativeLayout>

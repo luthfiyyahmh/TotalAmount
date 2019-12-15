@@ -1,10 +1,14 @@
 package com.android.totalamount;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +36,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import static com.android.totalamount.MainActivity.totalharga;
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerView rvBarang;
     private ArrayList<ItemBarang> list = new ArrayList<>();
@@ -42,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue mQueue;
     static int now = 0;
 
+    public TextView tvjumlah;
+    public static int totalharga = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
         rvBarang = findViewById(R.id.rv_barang);
         rvBarang.setHasFixedSize(true);
+        tvjumlah = findViewById(R.id.jumlahmain);
         mQueue = Volley.newRequestQueue(this);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,new IntentFilter("custom-message"));
     }
 
     @Override
@@ -66,6 +78,25 @@ public class MainActivity extends AppCompatActivity {
         if (selectedMode == R.id.action_list) {
             CropImage.activity().start(MainActivity.this);
         }
+    }
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String totalharga = intent.getStringExtra("jumlah");
+            if(totalharga != null){
+                Log.d("Total", totalharga);
+            }
+            tvjumlah.setText(totalharga);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
     }
 
     @Override
@@ -110,13 +141,11 @@ public class MainActivity extends AppCompatActivity {
                             String hargabrg = response.getString("harga");
                             int jumlah = 1;
 
-                            Log.d("Coro", namabrg +";"+hargabrg);
-
                             ItemBarang itemBarang = new ItemBarang();
                             itemBarang.setHarga(hargabrg); //Ini buat set ke textview atau layout
                             itemBarang.setNama(namabrg);
                             itemBarang.setJumlah(1);
-                            ListBarangAdapter listBarangAdapter = new ListBarangAdapter(list);
+                            ListBarangAdapter listBarangAdapter = new ListBarangAdapter(list, getApplicationContext());
 
                             if(now==0){
                                 list.add(itemBarang);
@@ -125,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                                 now = 1;
                             }else{
                                 list.add(itemBarang);
-                                Log.d("Coro", String.valueOf(list.size()));
                                 listBarangAdapter.notifyDataSetChanged();
                                 rvBarang.setAdapter(listBarangAdapter);
                             }
